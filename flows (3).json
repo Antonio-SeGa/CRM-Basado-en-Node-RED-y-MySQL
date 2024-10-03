@@ -1,0 +1,1032 @@
+[
+    {
+        "id": "5a35277603f7017d",
+        "type": "tab",
+        "label": "CRM TIcs v1.0",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "5c7692d50e864c2a",
+        "type": "inject",
+        "z": "5a35277603f7017d",
+        "name": "Carga datos",
+        "props": [],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 240,
+        "y": 80,
+        "wires": [
+            [
+                "2dc5e5f710d6af1b"
+            ]
+        ]
+    },
+    {
+        "id": "2dc5e5f710d6af1b",
+        "type": "function",
+        "z": "5a35277603f7017d",
+        "name": "Consulta SELECT",
+        "func": "/// La consulta select es para que con la carga del nodo de inyeccion se obtanega la información\nmsg.topic ='SELECT * FROM aspirantes'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 80,
+        "wires": [
+            [
+                "e6dd2d3c403946e3"
+            ]
+        ]
+    },
+    {
+        "id": "5d5c84a349ccf254",
+        "type": "ui_table",
+        "z": "5a35277603f7017d",
+        "group": "c345a7f4ca49c4c1",
+        "name": "Tabla de registro",
+        "order": 1,
+        "width": "15",
+        "height": "10",
+        "columns": [],
+        "outputs": 0,
+        "cts": false,
+        "x": 1010,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "5379f86e049195ab",
+        "type": "mysql",
+        "z": "5a35277603f7017d",
+        "mydb": "1899bc6a4ef86be0",
+        "name": "",
+        "x": 820,
+        "y": 140,
+        "wires": [
+            [
+                "992fb581f17dc162",
+                "5d5c84a349ccf254"
+            ]
+        ]
+    },
+    {
+        "id": "5ec9a9af466f0b4a",
+        "type": "function",
+        "z": "5a35277603f7017d",
+        "name": "Seleccion",
+        "func": "`\nEsta función lo que hace es selecciona la informacion de las\npersonas registradas para asi obtener su correo y nombre;\n para que esta informacion sea utilizada en el correo\n`\nconst opciones = msg.payload;\n\nif (opciones.includes(\"Todos\")) {\n    msg.topic = 'SELECT Correo, Nombre, ApellidoP, ApellidoM FROM aspirantes';\n} else {\n    //msg.topic = 'SELECT Correo, Nombre, ApellidoP, ApellidoM FROM aspirantes WHERE Institucion = \\'' + msg.payload.toString() + '\\'';\n    msg.topic = `SELECT Correo, Nombre, ApellidoP, ApellidoM FROM aspirantes WHERE Institucion = '${opciones}'`;\n}\n//msg.topic = 'SELECT Correo, Nombre, ApellidoP, ApellidoM FROM aspirantes';\n\n/*\nif (dropdownValue === 'Todos') {\n    msg.payload = { formData, opcion: 'TODOS' };\n    //msg.payload = formData\n    //msg.topic = dropdownValue\n} else {\n    msg.payload = { formData, opcion: \"OTRA OPCION\" };\n    //msg.payload = formData\n    //msg.topic = dropdownValue\n}*/\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 160,
+        "y": 480,
+        "wires": [
+            [
+                "ad8bf9f6b45ad168"
+            ]
+        ]
+    },
+    {
+        "id": "918929144fa9a4e4",
+        "type": "ui_form",
+        "z": "5a35277603f7017d",
+        "name": "",
+        "label": "Ingreso de usuarios",
+        "group": "d1b3ee5915f0f6fc",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Nombre",
+                "value": "Nombre",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Apellido Paterno",
+                "value": "ApellidoP",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Apellido Materno",
+                "value": "ApellidoM",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Correo",
+                "value": "Correo",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Telefono",
+                "value": "Telefono",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Facebook",
+                "value": "Facebook",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Institución",
+                "value": "Institucion",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Semestre",
+                "value": "Semestre",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Nombre": "",
+            "ApellidoP": "",
+            "ApellidoM": "",
+            "Correo": "",
+            "Telefono": "",
+            "Facebook": "",
+            "Institucion": "",
+            "Semestre": ""
+        },
+        "payload": "",
+        "submit": "Submit",
+        "cancel": "cancel",
+        "topic": "Form",
+        "topicType": "str",
+        "splitLayout": false,
+        "className": "",
+        "x": 210,
+        "y": 140,
+        "wires": [
+            [
+                "c8b6b3622c30a0bc"
+            ]
+        ]
+    },
+    {
+        "id": "c8b6b3622c30a0bc",
+        "type": "sqlstring-format",
+        "z": "5a35277603f7017d",
+        "name": "",
+        "query": " INSERT INTO aspirantes \n (Nombre, ApellidoP, ApellidoM, Correo, Telefono, Facebook, Institucion, Semestre) \n VALUES ( ?,?,?,?,?,?,?,?);\n",
+        "vars": "payload.Nombre,payload.ApellidoP,payload.ApellidoM,payload.Correo,payload.Telefono,payload.Facebook,payload.Institucion,payload.Semestre",
+        "outField": "topic",
+        "x": 410,
+        "y": 140,
+        "wires": [
+            [
+                "e6dd2d3c403946e3"
+            ]
+        ]
+    },
+    {
+        "id": "9266ba1f397b3d62",
+        "type": "function",
+        "z": "5a35277603f7017d",
+        "name": "function 4",
+        "func": "let data = msg.payload;\n//msg.payload = data.length;\n//msg.payload = data[0].Telefono;\nfor (let index = 0; index < data.length; index++) {\n    msg.payload = data[index].Telefono;\n    return msg;\n    \n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1220,
+        "y": 20,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "998f07d709a8f298",
+        "type": "debug",
+        "z": "5a35277603f7017d",
+        "name": "Dashboard Log",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "complete": "payload",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2000,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "ac46bd4f44b8eb65",
+        "type": "ui_form",
+        "z": "5a35277603f7017d",
+        "name": "Consulta de usuarios",
+        "label": "",
+        "group": "08e714efc0a7691b",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Nombre",
+                "value": "Nombre",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Nombre": ""
+        },
+        "payload": "",
+        "submit": "Submit",
+        "cancel": "cancel",
+        "topic": "Form",
+        "topicType": "str",
+        "splitLayout": false,
+        "className": "",
+        "x": 200,
+        "y": 200,
+        "wires": [
+            [
+                "1e97663332831414"
+            ]
+        ]
+    },
+    {
+        "id": "1e97663332831414",
+        "type": "sqlstring-format",
+        "z": "5a35277603f7017d",
+        "name": "",
+        "query": "Select * from aspirantes where Nombre = ?\n\n",
+        "vars": "payload.Nombre",
+        "outField": "topic",
+        "x": 410,
+        "y": 200,
+        "wires": [
+            [
+                "e6dd2d3c403946e3"
+            ]
+        ]
+    },
+    {
+        "id": "7f6eb0acec2296ae",
+        "type": "e-mail",
+        "z": "5a35277603f7017d",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": true,
+        "name": "",
+        "dname": "Envio de correo",
+        "x": 1620,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "ad8bf9f6b45ad168",
+        "type": "ui_form",
+        "z": "5a35277603f7017d",
+        "name": "Modificacion de asunto y contenido",
+        "label": "",
+        "group": "6517f3016d5c477a",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Asunto",
+                "value": "Subject",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Cuepo",
+                "value": "Message",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Subject": "",
+            "Message": ""
+        },
+        "payload": "",
+        "submit": "Enviar",
+        "cancel": "cancel",
+        "topic": "mhs",
+        "topicType": "msg",
+        "splitLayout": true,
+        "className": "",
+        "x": 380,
+        "y": 480,
+        "wires": [
+            [
+                "cd7769f6e23873fb",
+                "3ca0e8cba82497ef"
+            ]
+        ],
+        "outputLabels": [
+            "msg.payload"
+        ]
+    },
+    {
+        "id": "766ff677149ec0f5",
+        "type": "link in",
+        "z": "5a35277603f7017d",
+        "name": "link in 1",
+        "links": [
+            "e6dd2d3c403946e3",
+            "0c922272d203f07a"
+        ],
+        "x": 655,
+        "y": 140,
+        "wires": [
+            [
+                "5379f86e049195ab"
+            ]
+        ]
+    },
+    {
+        "id": "e6dd2d3c403946e3",
+        "type": "link out",
+        "z": "5a35277603f7017d",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [],
+        "x": 575,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "992fb581f17dc162",
+        "type": "ui_table",
+        "z": "5a35277603f7017d",
+        "group": "715dc720058e50a5",
+        "name": "Tabla de Consulta",
+        "order": 1,
+        "width": "10",
+        "height": "7",
+        "columns": [],
+        "outputs": 1,
+        "cts": true,
+        "x": 1010,
+        "y": 180,
+        "wires": [
+            [
+                "642dbf87b9e6119f",
+                "878ffdcbd0cfd9d8"
+            ]
+        ]
+    },
+    {
+        "id": "cd7769f6e23873fb",
+        "type": "mysql",
+        "z": "5a35277603f7017d",
+        "mydb": "1899bc6a4ef86be0",
+        "name": "",
+        "x": 640,
+        "y": 460,
+        "wires": [
+            [
+                "dfb54e52510e7904"
+            ]
+        ]
+    },
+    {
+        "id": "744aa9b1de0aa319",
+        "type": "function",
+        "z": "5a35277603f7017d",
+        "name": "Consulta UPDATE",
+        "func": "let id = msg.payload.id\nlet name = msg.payload.Nombre\nlet aP = msg.payload.ApellidoP\nlet aM = msg.payload.ApellidoM\nlet email = msg.payload.Correo\nlet cel = msg.payload.Telefono\nlet face = msg.payload.Facebook\nlet cole = msg.payload.Institucion\nlet sem = msg.payload.Semestre\n\nmsg.topic = \"UPDATE aspirantes SET Nombre='\" + name + \"', ApellidoP='\" + aP + \"', ApellidoM='\" + aM + \"', Correo='\" + email + \"', Telefono=\" + cel + \", Facebook='\" + face +\"', Institucion='\"+cole+\"', Semestre=\"+sem+\" WHERE id=\" + id\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1730,
+        "y": 180,
+        "wires": [
+            [
+                "0c922272d203f07a",
+                "998f07d709a8f298"
+            ]
+        ]
+    },
+    {
+        "id": "642dbf87b9e6119f",
+        "type": "function",
+        "z": "5a35277603f7017d",
+        "name": "Obtener ID",
+        "func": "// Se obtiene el ID del registtro que se desee modificar\nlet id = msg.payload.id\nmsg.payload = {\n    id: id\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1210,
+        "y": 140,
+        "wires": [
+            [
+                "851dd877c36b8db9"
+            ]
+        ]
+    },
+    {
+        "id": "851dd877c36b8db9",
+        "type": "join",
+        "z": "5a35277603f7017d",
+        "name": "Une ID con los datos actaizados",
+        "mode": "custom",
+        "build": "merged",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": true,
+        "timeout": "",
+        "count": "9",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1450,
+        "y": 180,
+        "wires": [
+            [
+                "744aa9b1de0aa319"
+            ]
+        ]
+    },
+    {
+        "id": "ae68d1541622b2b4",
+        "type": "debug",
+        "z": "5a35277603f7017d",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1340,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "0c922272d203f07a",
+        "type": "link out",
+        "z": "5a35277603f7017d",
+        "name": "link out 3",
+        "mode": "link",
+        "links": [
+            "766ff677149ec0f5"
+        ],
+        "x": 1925,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "8f4855fa650070ce",
+        "type": "debug",
+        "z": "5a35277603f7017d",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "878ffdcbd0cfd9d8",
+        "type": "ui_form",
+        "z": "5a35277603f7017d",
+        "name": "",
+        "label": "Actualizar usuarios",
+        "group": "3939e1a8bb4490e0",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Nombre",
+                "value": "Nombre",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Apellido Paterno",
+                "value": "ApellidoP",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Apellido Materno",
+                "value": "ApellidoM",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Correo",
+                "value": "Correo",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Telefono",
+                "value": "Telefono",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Facebook",
+                "value": "Facebook",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Institución",
+                "value": "Institucion",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Semestre",
+                "value": "Semestre",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Nombre": "",
+            "ApellidoP": "",
+            "ApellidoM": "",
+            "Correo": "",
+            "Telefono": "",
+            "Facebook": "",
+            "Institucion": "",
+            "Semestre": ""
+        },
+        "payload": "",
+        "submit": "Submit",
+        "cancel": "cancel",
+        "topic": "Form",
+        "topicType": "str",
+        "splitLayout": false,
+        "className": "",
+        "x": 1210,
+        "y": 220,
+        "wires": [
+            [
+                "851dd877c36b8db9"
+            ]
+        ]
+    },
+    {
+        "id": "d5789d0aa11fd597",
+        "type": "ui_template",
+        "z": "5a35277603f7017d",
+        "group": "6517f3016d5c477a",
+        "name": "Contenido de correo",
+        "order": 3,
+        "width": "12",
+        "height": "12",
+        "format": "<div ng-bind-html=\"msg.payload\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1380,
+        "y": 460,
+        "wires": [
+            [
+                "7f6eb0acec2296ae"
+            ]
+        ]
+    },
+    {
+        "id": "02bcc54008a63103",
+        "type": "comment",
+        "z": "5a35277603f7017d",
+        "name": "Comentarios1",
+        "info": "Apartado de registro y consulta de usuarios",
+        "x": 130,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "de9fa36e073eb5f0",
+        "type": "comment",
+        "z": "5a35277603f7017d",
+        "name": "Comentarios",
+        "info": "Apartado de envio de correo",
+        "x": 110,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "c054a2ded9ea02b2",
+        "type": "mysql",
+        "z": "5a35277603f7017d",
+        "mydb": "1899bc6a4ef86be0",
+        "name": "",
+        "x": 560,
+        "y": 340,
+        "wires": [
+            [
+                "0cce93d0069ca307"
+            ]
+        ]
+    },
+    {
+        "id": "4970304770e7a380",
+        "type": "inject",
+        "z": "5a35277603f7017d",
+        "name": "",
+        "props": [],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.1",
+        "topic": "",
+        "x": 190,
+        "y": 340,
+        "wires": [
+            [
+                "22a68bae36d335f3"
+            ]
+        ]
+    },
+    {
+        "id": "22a68bae36d335f3",
+        "type": "function",
+        "z": "5a35277603f7017d",
+        "name": "function 11",
+        "func": "msg.topic = \"SELECT Institucion FROM aspirantes GROUP BY Institucion\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 340,
+        "wires": [
+            [
+                "c054a2ded9ea02b2"
+            ]
+        ]
+    },
+    {
+        "id": "a18cc9567b29c612",
+        "type": "debug",
+        "z": "5a35277603f7017d",
+        "name": "debug 6",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1280,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "cce4a1b7e831347d",
+        "type": "ui_dropdown",
+        "z": "5a35277603f7017d",
+        "name": "Filtrado",
+        "label": "Filtrar por institucion",
+        "tooltip": "Filtrar a personas por institucion",
+        "place": "Select option",
+        "group": "6517f3016d5c477a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 1040,
+        "y": 340,
+        "wires": [
+            [
+                "a18cc9567b29c612",
+                "6c6484b9bc8433ff"
+            ]
+        ]
+    },
+    {
+        "id": "71e15fd93df3e8e9",
+        "type": "function",
+        "z": "5a35277603f7017d",
+        "name": "Arreglo",
+        "func": "/// Añadir la opcion \"Todos\" concatenando la lista extraida\n/// de la base de datos agrupando por institucion\nmsg.options = [\"Todos\"].concat(msg.options);\nmsg.payload = msg.options;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 340,
+        "wires": [
+            [
+                "cce4a1b7e831347d"
+            ]
+        ]
+    },
+    {
+        "id": "0cce93d0069ca307",
+        "type": "com.autana.jsonata",
+        "z": "5a35277603f7017d",
+        "name": "",
+        "template": "$.[*].Institucion",
+        "templateType": "jsonata",
+        "target": "options",
+        "targetType": "msg",
+        "x": 720,
+        "y": 340,
+        "wires": [
+            [
+                "71e15fd93df3e8e9"
+            ]
+        ]
+    },
+    {
+        "id": "85e6c38d24224eb0",
+        "type": "link in",
+        "z": "5a35277603f7017d",
+        "name": "link in 3",
+        "links": [
+            "6c6484b9bc8433ff"
+        ],
+        "x": 25,
+        "y": 480,
+        "wires": [
+            [
+                "5ec9a9af466f0b4a"
+            ]
+        ]
+    },
+    {
+        "id": "6c6484b9bc8433ff",
+        "type": "link out",
+        "z": "5a35277603f7017d",
+        "name": "link out 4",
+        "mode": "link",
+        "links": [
+            "85e6c38d24224eb0"
+        ],
+        "x": 1265,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "9be4c478aad83c6e",
+        "type": "function",
+        "z": "5a35277603f7017d",
+        "name": "Crear correo",
+        "func": "if (msg.payload.Subject && msg.payload.Message && msg.payload.Correo) {\n    msg.to = msg.payload.Correo\n    msg.topic = `Oferta Especial para ${msg.payload.Nombre} ${msg.payload.ApellidoP} ${msg.payload.ApellidoM}`;\n    msg.payload = `\n    <div style=\"max-width: 600px; margin: auto; background-color: #fff; padding: 20px;\">\n    <div style=\"text-align: center;\">\n      <img src=\"https://via.placeholder.com/600x200\" style=\"width: 100%; height: auto;\" alt=\"Encabezado CRM\">\n    </div>\n    <div style=\"padding: 20px;\">\n      <h1>Hola, ${msg.payload.Nombre} ${msg.payload.ApellidoP} ${msg.payload.ApellidoM}</h1>\n      <p>Estamos emocionados de informarte sobre nuestras últimas novedades en productos y servicios.</p>\n      <p>${msg.payload.Message}</p>\n    </div>\n    <div style=\"background-color: #333; color: white; text-align: center; padding: 10px; font-size: 14px;\">\n      <p>© 2024 Tu Empresa CRM</p>\n      <p><a href=\"mailto:contacto@tuempresa.com\" style=\"color: #fff; text-decoration: none;\">contacto@tuempresa.com</a> | Tel: (123) 456-7890</p>\n      <p>Síguenos: <a href=\"#\" style=\"color: #fff; text-decoration: none;\">Facebook</a> | <a href=\"#\" style=\"color: #fff; text-decoration: none;\">Twitter</a> | <a href=\"#\" style=\"color: #fff; text-decoration: none;\">LinkedIn</a></p>\n    </div>\n    </div>`\n    return [msg,];\n} else {\n    // Retorna error si no se han llenado ambos campos\n    return [,{ payload: 'Falta completar el asunto o mensaje' }];\n}\n\n//return msg;",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1150,
+        "y": 500,
+        "wires": [
+            [
+                "d5789d0aa11fd597"
+            ],
+            [
+                "ae68d1541622b2b4"
+            ]
+        ]
+    },
+    {
+        "id": "dfb54e52510e7904",
+        "type": "split",
+        "z": "5a35277603f7017d",
+        "name": "",
+        "splt": "",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "info",
+        "x": 830,
+        "y": 480,
+        "wires": [
+            [
+                "1296d89b8d7b2f31"
+            ]
+        ]
+    },
+    {
+        "id": "1296d89b8d7b2f31",
+        "type": "join",
+        "z": "5a35277603f7017d",
+        "name": "",
+        "mode": "custom",
+        "build": "merged",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": true,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 990,
+        "y": 500,
+        "wires": [
+            [
+                "9be4c478aad83c6e"
+            ]
+        ]
+    },
+    {
+        "id": "9843fe3faea3cec0",
+        "type": "link in",
+        "z": "5a35277603f7017d",
+        "name": "link in 4",
+        "links": [
+            "3ca0e8cba82497ef"
+        ],
+        "x": 875,
+        "y": 540,
+        "wires": [
+            [
+                "1296d89b8d7b2f31"
+            ]
+        ]
+    },
+    {
+        "id": "3ca0e8cba82497ef",
+        "type": "link out",
+        "z": "5a35277603f7017d",
+        "name": "link out 5",
+        "mode": "link",
+        "links": [
+            "9843fe3faea3cec0"
+        ],
+        "x": 585,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "c345a7f4ca49c4c1",
+        "type": "ui_group",
+        "name": "Consulta",
+        "tab": "219bf782a7bcea97",
+        "order": 2,
+        "disp": true,
+        "width": "15",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "1899bc6a4ef86be0",
+        "type": "MySQLdatabase",
+        "name": "BD Captacion",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "captacion",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "d1b3ee5915f0f6fc",
+        "type": "ui_group",
+        "name": "Formulario",
+        "tab": "219bf782a7bcea97",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "08e714efc0a7691b",
+        "type": "ui_group",
+        "name": "Formulario",
+        "tab": "4c2659b30526538e",
+        "order": 1,
+        "disp": true,
+        "width": "5",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6517f3016d5c477a",
+        "type": "ui_group",
+        "name": "Correo",
+        "tab": "4eab28893ec8d776",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "715dc720058e50a5",
+        "type": "ui_group",
+        "name": "Consulta",
+        "tab": "4c2659b30526538e",
+        "order": 2,
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3939e1a8bb4490e0",
+        "type": "ui_group",
+        "name": "Formulario de actualizar",
+        "tab": "4c2659b30526538e",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "219bf782a7bcea97",
+        "type": "ui_tab",
+        "name": "Registro de aspirantes",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "4c2659b30526538e",
+        "type": "ui_tab",
+        "name": "Consulta de aspirantes",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "4eab28893ec8d776",
+        "type": "ui_tab",
+        "name": "Envio de correo",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    }
+]
