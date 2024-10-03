@@ -24,13 +24,16 @@ El CRM se divide en tres módulos principales:
 El siguiente apartado muestra los resultados del funcionamiento del CRM, con ejemplos gráficos de la interfaz y de los correos enviados a los estudiantes.
 
 ### Ejemplo de Registro de Estudiantes
-![Registro de Estudiantes](ruta/a/imagen1.png)
+![Registro de Estudiantes](imgs/image1.png)
 
 ### Ejemplo de Consulta de Información
-![Consulta de Información](ruta/a/imagen2.png)
+![Consulta de Información](imgs/image2.png)
 
 ### Ejemplo de Envío de Correo Filtrado por Institución
-![Envío de Correo](ruta/a/imagen3.png)
+![Envío de Correo](imgs/image3.png)
+
+### Ejemplo de Correo Recibido
+![Correo Recibido](imgs/image4.png)
 
 ## Flujo de Trabajo en Node-RED
 
@@ -61,4 +64,4 @@ El archivo de flujo JSON (`flows.json`) está disponible para importar directame
 
 ## Contacto
 
-Si tienes alguna duda o sugerencia sobre el proyecto, no dudes en contactarme en: `contacto@miempresa.com`.
+Si tienes alguna duda o sugerencia sobre el proyecto, no dudes en contactarme en: `serranoantonio311@gmail.com`.
